@@ -39,7 +39,12 @@ class University:
     @classmethod
     def __generate_grade(cls, grade_range):
         grade_offset = random.randrange(0, len(grade_range))
-        return grade_range[grade_offset]
+        grade = grade_range[grade_offset]
+
+        # Randomly inject some missing grades
+        if random.randrange(1, 10) <= 1:
+            grade = ""
+        return grade
 
     @classmethod
     def __generate_student_name(cls, separate_first_name_last_name):
