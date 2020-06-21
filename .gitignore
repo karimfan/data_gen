@@ -12,6 +12,8 @@
 /build
 /src
 /sample_data
+/data
+/sample_data
 
 # misc
 .DS_Store

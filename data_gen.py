@@ -95,7 +95,7 @@ def main():
               "C+", "C", "C-", "D+", "D", "D-", "F"]
     university = University(subjects, grades, 1024)
     university.generate_student_grades()
-    university.serialize("./foo.csv")
+    university.serialize("./data/uni1.csv")
 
     subjects = ["Mathematics", "Physics", "Soc Studies", "Art",
                 "Music", "Ancient History", "Biology", "Neural Networks"]
@@ -103,7 +103,14 @@ def main():
     university = University(subjects, grades, 1024,
                             separate_first_name_last_name=False)
     university.generate_student_grades()
-    university.serialize("./foo2.csv")
+    university.serialize("./data/uni2.csv")
+
+    subjects = ["Mathematics", "Physics", "Soc. Studies", "Computer Science",
+                "Economics", "Bus. Administration"]
+    grades = list(range(100))
+    university = University(subjects, grades, 1024)
+    university.generate_student_grades()
+    university.serialize("./data/uni3.csv")
 
 
 if __name__ == "__main__":
