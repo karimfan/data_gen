@@ -10,11 +10,6 @@ def generate_random_string(stringLength=8):
     return ''.join(random.choice(letters) for i in range(stringLength))
 
 
-class OutputFormat(Enum):
-    CSV = 1
-    JSON = 2
-
-
 class University:
     def __init__(self, subjects, grade_range, num_students, separate_first_name_last_name=True):
         seed(1)
@@ -57,13 +52,17 @@ class University:
 
         return first_name, last_name
 
-    def serialize(self, file_name, format=OutputFormat.CSV):
+    def serialize(self, file_name):
         with open(file_name, 'w') as outfile:
             if self.separate_first_name_last_name is True:
                 outfile.writelines(
                     ["first_name, last_name, subject, grade", "\n"])
+            else:
+                outfile.writelines(
+                    ["name, subject, grade", "\n"])
+
             for i in self.students:
-                i.serialize(outfile)
+                i.serialize(outfile, self.separate_first_name_last_name)
 
 
 class Student:
@@ -75,16 +74,24 @@ class Student:
     def set_grade(self, subject, grade):
         self.subject_grades.append((subject, grade))
 
-    def serialize(self, file, format=OutputFormat.CSV):
-        if format is OutputFormat.CSV:
-            return self.__serialize_as_CSV(file)
-
-    def __serialize_as_CSV(self, file):
+    def serialize(self, file, separate_first_last_name):
         lines = []
+
+        # Inject the header on every student
+        if separate_first_last_name is False:
+            file.writelines(
+                ["name, subject, grade", "\n"])
+
         for i in self.subject_grades:
-            lines.append("{}, {}, {}, {}".format(
-                self.first_name, self.last_name, i[0], i[1]))
+            if separate_first_last_name is True:
+                lines.append("{}, {}, {}, {}".format(
+                    self.first_name, self.last_name, i[0], i[1]))
+            else:
+                lines.append("{}, {}, {}".format(
+                    self.first_name + self.last_name, i[0], i[1]))
+
             lines.append("\n")
+
         file.writelines(lines)
 
 
